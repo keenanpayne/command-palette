@@ -1,4 +1,7 @@
+// 
 // Constants
+// ---------
+
 const root = document.documentElement;
 const parentElement = document.querySelector('.commandPalette');
 const input = parentElement.querySelector('.commandPalette-input');
@@ -79,6 +82,14 @@ const commands = [
     shortcut: [],
     icon: `<svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg"> <g clip-path="url(#clip0_27_649)"> <path d="M17.5 0C18.8789 0 20 1.11914 20 2.5V15C20 16.3789 18.8789 17.5 17.5 17.5H2.5C1.11914 17.5 0 16.3789 0 15V2.5C0 1.11914 1.11914 0 2.5 0H17.5ZM9.0625 9.0625V5H1.875V9.0625H9.0625ZM1.875 10.9375V15C1.875 15.3438 2.15469 15.625 2.5 15.625H9.0625V10.9375H1.875ZM10.9375 15.625H17.5C17.8438 15.625 18.125 15.3438 18.125 15V10.9375H10.9375V15.625ZM18.125 9.0625V5H10.9375V9.0625H18.125Z" fill="#4E5061"/> </g> <defs> <clipPath id="clip0_27_649"> <rect width="20" height="18" fill="white"/> </clipPath> </defs> </svg> `,
   },
+  {
+    name: 'Mege nodes',
+    description: '',
+    group: 'Nodes',
+    shortcut: [],
+    icon: ``,
+    subcommand: 'merge'
+  },
 ];
 const shortcutKeys = [
   {
@@ -95,12 +106,32 @@ const shortcutKeys = [
   },
 ]
 
+
+// 
 // State
+// -----
+
 let state = {
   activeCommand: -1,
   notification: '',
   help: true,
 };
+
+
+//
+// Helpers
+// -------
+
+// Ref: https://stackoverflow.com/questions/29896907/bold-part-of-string
+// TODO: When searching "view board", "view as board" should display, even though
+//       "as" was never typed
+// TODO: "Ensure all `<strong></strong>` tags are removed when `reset()` runs"
+const boldString = (str, substr) => str.toLowerCase().replaceAll(substr.toLowerCase(), `<strong>${substr}</strong>`);
+
+
+// 
+// Components
+// ----------
 
 const descriptionElement = (desc) => {
   if (!desc) return '';
@@ -127,7 +158,7 @@ const shortcutKeysElement = (shortcuts) => {
   
   return Object.keys(shortcuts).map((key) => {
     return `
-      <span class="shortcuts-key">
+      <span class="shortcut">
         ${shortcutKeys[key].icon}
       </span>
     `
@@ -150,14 +181,42 @@ const rightArrowElement = (options) => {
   return `<svg class="command-arrow" width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg"> <g clip-path="url(#clip0_41_300)"> <path d="M19.5804 10.5833C20.1384 10.0187 20.1384 9.10181 19.5804 8.53723L12.4375 1.31067C11.8795 0.746094 10.9732 0.746094 10.4152 1.31067C9.85714 1.87524 9.85714 2.79211 10.4152 3.35669L15.125 8.11719H1.42857C0.638393 8.11719 0 8.76306 0 9.5625C0 10.3619 0.638393 11.0078 1.42857 11.0078H15.1205L10.4196 15.7683C9.86161 16.3329 9.86161 17.2498 10.4196 17.8143C10.9777 18.3789 11.8839 18.3789 12.442 17.8143L19.5848 10.5878L19.5804 10.5833Z" fill="#2D2D37"/> </g> <defs> <clipPath id="clip0_41_300"> <rect width="20" height="19" fill="white"/> </clipPath> </defs> </svg>`
 }
 
-// Ref: https://stackoverflow.com/questions/29896907/bold-part-of-string
-// TODO: When searching "view board", "view as board" should display, even though
-//       "as" was never typed
-// TODO: "Ensure all `<strong></strong>` tags are removed when `reset()` runs"
-const boldString = (str, substr) => str.toLowerCase().replaceAll(substr.toLowerCase(), `<strong>${substr}</strong>`);
+const mergeSubcommandElement = () => { 
+  return `
+    <li class="subcommand">
+      <span class="subcommand-label">
+        Merge nodes
+      </span>
+    </li>
+  `
+}
 
-function renderCommand(item, filter = '', index) {
-  const {name, description, group, shortcut, icon, options} = item;
+
+// 
+// Rendering
+// ---------
+
+const renderSubcommand = (command) => {
+  if (!command) return false;
+
+  let subcommandHTML;
+  list.innerHTML = "";
+
+  switch (command) {
+    case 'merge':
+      subcommandHTML = mergeSubcommandElement();
+      break;
+    default:
+      break;
+  }
+
+  if (subcommandHTML) {
+    list.innerHTML = subcommandHTML;
+  }
+}
+
+const renderCommand = (item, filter = '', index) => {
+  const {name, description, group, shortcut, icon, options, subcommand} = item;
   
   return `
     <li class="command" role="button" tabindex="0" data-index="${index}">
@@ -167,13 +226,13 @@ function renderCommand(item, filter = '', index) {
         ${descriptionElement(description)}
       </span>
       
-      ${rightArrowElement(options)}
+      ${rightArrowElement(options) || rightArrowElement(subcommand)}
       ${shortcutsElement(shortcutKeysElement(shortcut))}
     </li>
   `;
 }
 
-function render(items, filter = '') {
+const render = (items, filter = '') => {
   list.innerHTML = "";
     
   items.forEach((item, index) => {
@@ -181,28 +240,9 @@ function render(items, filter = '') {
   });
 }
 
-function move(direction) {
-  const commandItems = parentElement.querySelectorAll('.command');
-  const commandCount = commandItems.length;
-  
-  if (direction === 'up') {
-    if (state.activeCommand >= 0) {
-      state.activeCommand++;
-    }
-
-    if (!state.activeCommand || state.activeCommand < 0 || state.activeCommand === commandCount) {
-      state.activeCommand = 0;
-    }
-  } else if (direction === 'down') {
-    if (state.activeCommand <= 0) {
-      state.activeCommand = commandCount - 1;
-    } else {
-      state.activeCommand--;
-    }
-  }
-
-  commandItems[state.activeCommand].focus();
-}
+//
+// Notifications
+// -------------
 
 const notificationContents = (text = '') => {
   state.notification = text;
@@ -226,6 +266,11 @@ const notificationTrigger = () => {
   }, 3000);
 }
 
+
+//
+// Interactivity
+// -------------
+
 const checkOptions = () => {
   const options = commands[state.activeCommand].options;
   
@@ -236,16 +281,58 @@ const checkOptions = () => {
   }
 }
 
+const checkSubcommand = () => {
+  const subcommand = commands[state.activeCommand].subcommand;
+  
+  if (!subcommand) { 
+    return false;
+  } else {
+    return subcommand;
+  }
+}
+
 const triggerCommand = () => {
   const options = checkOptions();
+  const subcommand = checkSubcommand();
     
-  if (!options) {
+  if (!options && !subcommand) {
     notificationTrigger();
     close();
     reset();
   } else {
-    render(options);
+    input.value = commands[state.activeCommand].name;
   }
+  
+  if (options) {
+    render(options);
+  } else if (subcommand) { 
+    renderSubcommand(subcommand);
+  } else { 
+    return false;
+  }
+}
+
+const move = (direction) => {
+  const commandItems = parentElement.querySelectorAll('.command');
+  const commandCount = commandItems.length;
+  
+  if (direction === 'up') {
+    if (state.activeCommand >= 0) {
+      state.activeCommand++;
+    }
+
+    if (!state.activeCommand || state.activeCommand < 0 || state.activeCommand === commandCount) {
+      state.activeCommand = 0;
+    }
+  } else if (direction === 'down') {
+    if (state.activeCommand <= 0) {
+      state.activeCommand = commandCount - 1;
+    } else {
+      state.activeCommand--;
+    }
+  }
+
+  commandItems[state.activeCommand].focus();
 }
 
 const open = () => {
@@ -266,104 +353,113 @@ const reset = () => {
   render(commands);
 }
 
-// Open command palette when CTRL + K is clicked
-document.addEventListener('keydown', function(event) {
-  // CTRL + K
-  if (event.ctrlKey && event.key === 'k') {
-    event.preventDefault();
+const eventListeners = () => {
+  // Keyboard events
+  document.addEventListener('keydown', function(event) {
+    // CTRL + K
+    if (event.ctrlKey && event.key === 'k') {
+      event.preventDefault();
+      
+      open();
+      
+      if (parentElement.classList.contains(visibleClass)) {
+        reset();
+      }
     
-    open();
+    // ESC
+    } else if (event.keyCode === 27) {
+      event.preventDefault();
+      close();
     
-    if (parentElement.classList.contains(visibleClass)) {
+    // Down arrow
+    } else if (event.keyCode === 40) {
+      move('up');
+    
+    // Up arrow
+    } else if (event.keyCode === 38) {
+      move('down');
+    
+    // Right arrow
+    } else if (event.keyCode === 39) {
+      console.log('navigating right');
+
+    // Left arrow
+    } else if (event.keyCode === 37) {
       reset();
-    }
-  
-  // ESC
-  } else if (event.keyCode === 27) {
-    event.preventDefault();
-    close();
-  
-  // Down arrow
-  } else if (event.keyCode === 40) {
-    move('up');
-  
-  // Up arrow
-  } else if (event.keyCode === 38) {
-    move('down');
-  
-  // Right arrow
-  } else if (event.keyCode === 39) {
-    console.log('navigating right');
-
-  // Left arrow
-  } else if (event.keyCode === 37) {
-    reset();
-  
-  // Enter
-  } else if (event.keyCode === 13) {
-    triggerCommand();
     
-  // CTRL + H
-  } else if (event.ctrlKey && event.key === 'h') {
-    help.classList.toggle(a11yHiddenClass);
-  }
-});
-
-// Filter commands while user types
-input.addEventListener('input', (e) => {
-  const filter = e.target.value;
-  const filtered = commands.filter(item => {
-    const name = item.name.toLowerCase();
-    return name.includes(filter.toLowerCase());
+    // Enter
+    } else if (event.keyCode === 13) {
+      triggerCommand();
+      
+    // CTRL + H
+    } else if (event.ctrlKey && event.key === 'h') {
+      help.classList.toggle(a11yHiddenClass);
+    }
   });
-  
-  render(filtered, filter);
-});
 
-// Input is focused
-input.addEventListener('focus', (e) => {
-  state.activeCommand = -1;
-});
+  // Filter commands while user types
+  input.addEventListener('input', (e) => {
+    const filter = e.target.value;
+    const filtered = commands.filter(item => {
+      const name = item.name.toLowerCase();
+      return name.includes(filter.toLowerCase());
+    });
+    
+    render(filtered, filter);
+  });
 
-// Trigger commands with mouse
-list.addEventListener('click', (e) => {
-  const target = e.target;
-  const command = target.closest('.command');
-  
-  state.activeCommand = command.dataset.index;
-  triggerCommand();
-});
+  // Input is focused
+  input.addEventListener('focus', (e) => {
+    state.activeCommand = -1;
+  });
 
-// Toggle scroll on hover
-list.addEventListener('mouseover', (e) => {
-  if (!list.classList.contains('-scroll')) {
-    list.classList.add('-scroll');
-  }
-});
+  // Trigger commands with mouse
+  list.addEventListener('click', (e) => {
+    const command = e.target.closest('.command');
+    state.activeCommand = command.dataset.index;
+    triggerCommand();
+  });
 
-list.addEventListener('mouseout', (e) => {
-  if (list.classList.contains('-scroll')) {
-    list.classList.remove('-scroll');
-  }
-});
+  // Toggle scroll on hover
+  list.addEventListener('mouseover', (e) => {
+    if (!list.classList.contains('-scroll')) {
+      list.classList.add('-scroll');
+    }
+  });
 
-// Toggle help guide
-helpGuide.addEventListener('click', (e) => {
-  state.help = !state.help;
-});
+  list.addEventListener('mouseout', (e) => {
+    if (list.classList.contains('-scroll')) {
+      list.classList.remove('-scroll');
+    }
+  });
 
-// Show/hide help items
-helpGuide.addEventListener('mouseover', (e) => {
-  if (state.help) {
-    document.querySelectorAll('.commandPalette-help-item').forEach(item => item.classList.add(hiddenClass));
-  }
-})
+  // Toggle help guide
+  helpGuide.addEventListener('click', (e) => {
+    state.help = !state.help;
+  });
 
-helpGuide.addEventListener('mouseout', (e) => {
-  if (state.help) {
-    document.querySelectorAll('.commandPalette-help-item').forEach(item => item.classList.remove(hiddenClass));
-  }
-})
+  // Show/hide help items
+  helpGuide.addEventListener('mouseover', (e) => {
+    if (state.help) {
+      document.querySelectorAll('.commandPalette-help-item').forEach(item => item.classList.add(hiddenClass));
+    }
+  });
 
+  helpGuide.addEventListener('mouseout', (e) => {
+    if (state.help) {
+      document.querySelectorAll('.commandPalette-help-item').forEach(item => item.classList.remove(hiddenClass));
+    }
+  });
+};
+
+const init = () => { 
+  eventListeners();
+  render(commands);
+}
+
+
+// 
 // Initialize
-window.onLoad = render(commands);
+// ----------
+
+window.onLoad = init();

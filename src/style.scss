@@ -77,9 +77,15 @@
   --transition-m: 150ms;
   --transition-l: 225ms;
 
-  --font-mono: 'Source Code Pro', monospace;
+  --font-family-base: -apple-system, system-ui, sans-serif;
+  --font-family-mono: 'Source Code Pro', monospace;
   --font-weight-mono-semibold: 700;
 }
+
+
+//
+// Base Styles
+// -----------
 
 // Overlay
 :root {
@@ -98,13 +104,13 @@
   }
 }
 
-
-//
-// Base Styles
-// -----------
+body {
+  font-family: var(--font-family-base);
+  overflow-x: hidden;
+}
 
 code {
-  font-family: var(--font-mono);
+  font-family: var(--font-family-mono);
 }
 
 
@@ -136,6 +142,7 @@ code {
   border: none;
   border-radius: var(--command-border-radius) var(--command-border-radius) 0 0;
   color: var(--command-text-inverse);
+  font-size: 1rem;
   line-height: 1;
   outline: 0;
   padding: 0;
@@ -186,15 +193,7 @@ code {
 }
 
 .commandPalette-help-icon {
-  background-color: var(--command-help-icon-background);
-  border-radius: 3px;
-  border: 1px solid var(--command-help-icon-border);
-  color: var(--command-text-tertiary);
-  font-family: var(--font-mono);
-  fill: var(--command-help-icon-fill);
-  height: 15px;
-  margin-right: .35rem;
-  padding: .15rem .35em;
+  margin-right: .2rem;
   
   // Modifiers
   &.-up-down-arrow { 
@@ -216,10 +215,10 @@ code {
   
   align-items: center;
   background-color: var(--command-help-icon-background);
-  border-bottom-left-radius: 6px;
+  border-bottom-left-radius: var(--command-border-radius);
   cursor: pointer;
   display: flex;
-  padding: .25rem .35rem;
+  padding: .35rem .5rem;
   
   &:hover {
     --icon-opacity: 1;
@@ -238,7 +237,6 @@ code {
   @include a11yHidden();
   
   font-size: .875rem;
-  margin-right: .5rem;
   line-height: 0;
   opacity: var(--text-opacity);
   transition: opacity var(--transition-s);
@@ -278,7 +276,7 @@ code {
     }
     
     .command-arrow { 
-      transform: translateX(4px);
+      transform: translateX(2px);
     }
   }
 }
@@ -307,7 +305,7 @@ code {
 .command-details {
   flex: 1;
   
-  // Sentence-case
+  // Sentence-case workaround
   &::first-letter {
     text-transform: uppercase;
   }
@@ -322,17 +320,30 @@ code {
   transition: transform var(--transition-m);  
 }
 
-
 //
-// Keyboard Shortcuts
-// ------------------
+// Subcommands
+// -----------
 
-.shortcuts {
-  
+.subcommand { 
+
 }
 
-.shortcuts-key {
-  
+
+//
+// Keyboard Shortcut
+// -----------------
+
+.shortcut {
+  align-items: center;
+  background-color: var(--command-help-icon-background);
+  border-radius: 3px;
+  border: 1px solid var(--command-help-icon-border);
+  color: var(--command-text-tertiary);
+  display: inline-flex;
+  font-family: var(--font-family-mono);
+  fill: var(--command-help-icon-fill);
+  height: 15px;
+  padding: .15rem .3em;
 }
 
 
@@ -345,15 +356,20 @@ code {
   box-shadow: var(--notification-shadow);
   border-radius: var(--notification-border-radius);
   color: var(--notification-text);
+  opacity: 0;
   padding: .75rem 1rem;
   position: absolute;
   right: 0;
   top: 1.5rem;
   transform: translateX(100%);
-  transition: transform var(--transition-l) ease-in-out;
+  transition: transform var(--transition-l) ease-in-out, opacity var(--transition-s);
+  user-select: none;
+  width: 200px;
   
   // Modifiers
   &.-visible {
+    opacity: 1;
     transform: translateX(-1.5rem);
+    user-select: all;
   }
 }
