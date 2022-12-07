@@ -1,0 +1,359 @@
+//
+// Demo Styles
+// -----------
+
+:root {
+  height: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+
+
+//
+// Content Visibility
+// ==================
+// Ref: https://www.a11yproject.com/posts/how-to-hide-content/
+
+// Mixins
+@mixin a11yHidden() {
+  height: 1px;
+  left: -10000px;
+  overflow: hidden;
+  position: absolute;
+  top: auto;
+  width: 1px;
+}
+
+@mixin a11yVisible() {
+  height: initial;
+  left: initial;
+  overflow: initial;
+  position: initial;
+  top: initial;
+  width: initial;
+}
+
+// Utilities
+._a11y_hidden {
+  @include a11yHidden;
+}
+
+._a11y_visible {
+  @include a11yVisible;
+}
+
+
+//
+// Custom Properties
+// -----------------
+
+:root {
+  --command-background: #999;
+  --command-shadow: 0px 4px 6px 2px rgba(0, 0, 0, 0.1);
+  --command-active: #ECF3FD;
+  --command-input: #2D2D37;
+  --command-list: #ffffff;
+  --command-text: #2D2D37;
+  --command-text-secondary: #4E5061;
+  --command-text-tertiary: #6F768F;
+  --command-text-inverse: #ffffff;
+  --command-help-background: #fafafa;
+  --command-help-border: #f2f2f2;
+  --command-help-icon-background: #e3e3e3;
+  --command-help-icon-fill: #52586c;
+  --command-help-icon-border: #d1d5dc;
+  --command-help-font-size: .875rem;
+  --command-width: 600px;
+  --command-border-radius: 6px;
+  --command-height: 55px;
+  --command-list-limit: 3;
+  
+  --notification-text: #ffffff;
+  --notification-background: #2D2D37;
+  --notification-shadow: 0px 4px 6px 2px rgba(0, 0, 0, 0.1);
+  --notification-border-radius: 4px;
+  
+  --transition-s: 75ms;
+  --transition-m: 150ms;
+  --transition-l: 225ms;
+
+  --font-mono: 'Source Code Pro', monospace;
+  --font-weight-mono-semibold: 700;
+}
+
+// Overlay
+:root {
+  position: relative;
+  
+  &.-overlay {
+    &::before {
+      background: rgba(0, 0, 0, .35);
+      content: '';
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }    
+  }
+}
+
+
+//
+// Base Styles
+// -----------
+
+code {
+  font-family: var(--font-mono);
+}
+
+
+//
+// Command Palette
+// ---------------
+
+.commandPalette {
+  color: var(--command-text);
+  border-radius: var(--command-border-radius);
+  box-shadow: var(--command-shadow);
+  display: none;
+  width: var(--command-width);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  visibility: hidden;
+  
+  // Modifiers
+  &.-visible {
+    display: block;
+    visibility: visible;
+  }
+}
+
+.commandPalette-input {
+  background-color: var(--command-input);
+  border: none;
+  border-radius: var(--command-border-radius) var(--command-border-radius) 0 0;
+  color: var(--command-text-inverse);
+  line-height: 1;
+  outline: 0;
+  padding: 0;
+  height: var(--command-height);
+  text-indent: 1rem;
+  width: 100%;
+}
+
+.commandPalette-list {
+  background-color: var(--command-list);
+  list-style-type: none;
+  margin: 0;
+  max-height: calc(var(--command-height) * var(--command-list-limit));
+  overflow: hidden;
+  padding: 0;
+  width: 100%;
+  
+  &:focus {
+    outline: 0;
+  }
+
+  // Modifiers
+  &.-scroll {
+    overflow: scroll;
+  }
+}
+
+.commandPalette-help {
+  align-items: center;
+  background-color: var(--command-help-background);
+  border-top: 1px solid var(--command-help-border);
+  border-radius: 0 0 var(--command-border-radius) var(--command-border-radius);
+  color: var(--command-text-tertiary);
+  display: flex;
+  font-size: var(--command-help-font-size);
+}
+
+.commandPalette-help-item {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  margin-left: 1rem;
+  
+  // Modifiers
+  &.-hidden { 
+    @include a11yHidden();
+  }
+}
+
+.commandPalette-help-icon {
+  background-color: var(--command-help-icon-background);
+  border-radius: 3px;
+  border: 1px solid var(--command-help-icon-border);
+  color: var(--command-text-tertiary);
+  font-family: var(--font-mono);
+  fill: var(--command-help-icon-fill);
+  height: 15px;
+  margin-right: .35rem;
+  padding: .15rem .35em;
+  
+  // Modifiers
+  &.-up-down-arrow { 
+    height: 14px;
+  }
+  
+  &.-forward-slash,
+  &.-esc { 
+    font-weight: var(--font-weight-mono-semibold);
+    line-height: 1.1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+.commandPalette-help-guide {
+  --icon-opacity: .5;
+  --text-opacity: 0;
+  
+  align-items: center;
+  background-color: var(--command-help-icon-background);
+  border-bottom-left-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  padding: .25rem .35rem;
+  
+  &:hover {
+    --icon-opacity: 1;
+    --text-opacity: 1;
+    
+    .commandPalette-help-hint {
+      @include a11yVisible();
+      
+      left: 3rem;
+      position: absolute;
+    }
+  }
+}
+
+.commandPalette-help-hint {
+  @include a11yHidden();
+  
+  font-size: .875rem;
+  margin-right: .5rem;
+  line-height: 0;
+  opacity: var(--text-opacity);
+  transition: opacity var(--transition-s);
+}
+
+.commandPalette-help-guide-icon {
+  fill: var(--command-help-guide-primary);
+  opacity: var(--icon-opacity);
+  transition: opacity var(--transition-m);
+  width: 18px;
+}
+
+
+//
+// Individual Commands
+// -------------------
+
+.command {
+  align-items: center;
+  color: var(--command-text-secondary);
+  cursor: pointer;
+  display: flex;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  height: var(--command-height);
+  
+  &:hover,
+  &:focus {
+    background-color: var(--command-active);
+    color: var(--command-text);
+    outline: 0;
+    
+    .command-description {
+      height: auto;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    .command-arrow { 
+      transform: translateX(4px);
+    }
+  }
+}
+
+.command-description {
+  color: var(--command-text-tertiary);
+  display: block;
+  font-size: .75rem;
+  height: 0;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: transform var(--transition-m), opacity var(--transition-s);
+}
+
+.command-icon {
+  line-height: 0;
+  margin-right: .75rem;
+  
+  // Descendants
+  > svg {
+    height: auto;
+    max-width: 18px;
+  }
+}
+
+.command-details {
+  flex: 1;
+  
+  // Sentence-case
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
+.command-shortcuts {
+  text-align: right;
+}
+
+.command-arrow {
+  max-width: 16px;
+  transition: transform var(--transition-m);  
+}
+
+
+//
+// Keyboard Shortcuts
+// ------------------
+
+.shortcuts {
+  
+}
+
+.shortcuts-key {
+  
+}
+
+
+//
+// Notifications
+// -------------
+
+.notification {
+  background: var(--notification-background);
+  box-shadow: var(--notification-shadow);
+  border-radius: var(--notification-border-radius);
+  color: var(--notification-text);
+  padding: .75rem 1rem;
+  position: absolute;
+  right: 0;
+  top: 1.5rem;
+  transform: translateX(100%);
+  transition: transform var(--transition-l) ease-in-out;
+  
+  // Modifiers
+  &.-visible {
+    transform: translateX(-1.5rem);
+  }
+}

@@ -1,0 +1,63 @@
+<!-- TODO: Set up `tabindex` -->
+<!-- 
+  Inspiration: 
+    - https://codepen.io/patheticgeek/pen/ExmgadM?editors=0010
+    - https://www.toptal.com/developers/keycode/for/meta
+    - https://philipcdavis.com/writing/command-palette-interfaces
+    - https://github.com/stefanjudis/awesome-command-palette
+    - https://github.com/timc1/kbar
+    - https://github.com/asabaylus/react-command-palette
+    - https://github.com/harshhhdev/kmenu
+    - https://kmenu.hxrsh.in
+    - https://github.com/albingroen/react-cmdk
+ -->
+
+<p>
+  Click <code>CTRL + K</code> to toggle the command palette
+</p>
+
+<!-- TODO: Display notification when user selects command -->
+<aside class="notification"></aside>
+
+<div aria-modal="true" role="dialog" aria-label="Command palette" class="commandPalette -visible ">
+  <input type="text" placeholder="Enter command..." class="commandPalette-input" />
+  
+  <ul class="commandPalette-list" tabindex="-1"></ul>
+  
+  <footer class="commandPalette-help">
+    <aside class="commandPalette-help-guide">
+      <span class="commandPalette-help-hint">
+        <code>CTRL + h</code> toggles help bar
+      </span>
+
+      <svg class="commandPalette-help-guide-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M256 0C114.6 0 0 114.6 0 256s114.6 256 256 256s256-114.6 256-256S397.4 0 256 0zM256 464c-114.7 0-208-93.31-208-208S141.3 48 256 48s208 93.31 208 208S370.7 464 256 464zM256 336c-18 0-32 14-32 32s13.1 32 32 32c17.1 0 32-14 32-32S273.1 336 256 336zM289.1 128h-51.1C199 128 168 159 168 198c0 13 11 24 24 24s24-11 24-24C216 186 225.1 176 237.1 176h51.1C301.1 176 312 186 312 198c0 8-4 14.1-11 18.1L244 251C236 256 232 264 232 272V288c0 13 11 24 24 24S280 301 280 288V286l45.1-28c21-13 34-36 34-60C360 159 329 128 289.1 128z"/></svg>
+    </aside>
+
+    <span class="commandPalette-help-item">
+      <svg class="commandPalette-help-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M119.7 409.6l-112-104c-10.23-9.5-10.23-25.69 0-35.19l112-104c6.984-6.484 17.17-8.219 25.92-4.406s14.41 12.45 14.41 22L159.1 264h304V56c0-13.25 10.75-24 24-24s24 10.75 24 24V288c0 13.25-10.75 24-24 24h-328l.0015 80c0 9.547-5.656 18.19-14.41 22S126.7 416.1 119.7 409.6z"/></svg>
+
+      to select
+    </span>
+    
+    <span class="commandPalette-help-item -enter">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512" class="commandPalette-help-icon -up-down-arrow"><path d="M254 366.4C250.2 357.7 241.5 352 232 352H152V160h80c9.547 0 18.19-5.656 21.1-14.41c3.813-8.75 2.078-18.94-4.406-25.92l-104-112C141 2.781 134.5 .3359 128 .3359s-13.05 2.445-17.59 7.336l-104 112C-.0781 126.7-1.813 136.8 1.999 145.6C5.812 154.3 14.45 160 24 160h80v192H24c-9.547 0-18.19 5.656-22 14.41s-2.078 18.94 4.406 25.92l103.1 112c4.547 4.891 11.07 7.336 17.6 7.336s13.05-2.445 17.59-7.336l104-112C256.1 385.3 257.8 375.2 254 366.4z"/></svg>
+      to navigate
+    </span>
+    
+    <span class="commandPalette-help-item">      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="commandPalette-help-icon -backspace"><path d="M145.7 130C154.4 133.8 160.1 142.5 160.1 151.1l.0004 80h327.9c13.25 0 23.1 10.75 23.1 23.1s-10.75 24-23.1 24H160.1l-.0004 79.1c0 9.547-5.66 18.19-14.42 22c-8.754 3.811-18.95 2.077-25.94-4.407l-112.1-104c-10.23-9.5-10.23-25.69 0-35.19l112.1-104C126.7 127.9 136.9 126.2 145.7 130z"/></svg>
+
+      go back
+    </span>
+    
+    <span class="commandPalette-help-item">
+      <span class="commandPalette-help-icon -forward-slash" aria-label="forward key (/)">/</span>
+      to group
+    </span>
+    
+    <span class="commandPalette-help-item">
+      <span class="commandPalette-help-icon -esc" aria-label="escape key (esc)">esc</span>
+      to close
+    </span>    
+  </footer>
+</div>
