@@ -187,6 +187,10 @@ const mergeSubcommandElement = () => {
       <span class="subcommand-label">
         Merge nodes
       </span>
+
+      <div class="merge">
+        <input type="text" placeholder="Source node">
+      </div>
     </li>
   `
 }
@@ -378,17 +382,13 @@ const eventListeners = () => {
     // Up arrow
     } else if (event.keyCode === 38) {
       move('down');
-    
-    // Right arrow
-    } else if (event.keyCode === 39) {
-      console.log('navigating right');
 
     // Left arrow
     } else if (event.keyCode === 37) {
       reset();
     
-    // Enter
-    } else if (event.keyCode === 13) {
+    // Enter/Right arrow
+    } else if (event.keyCode === 13 || event.keyCode === 39) {
       triggerCommand();
       
     // CTRL + H
