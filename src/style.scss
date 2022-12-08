@@ -64,21 +64,26 @@
   --command-text-inverse: #ffffff;
   --command-help-background: #fafafa;
   --command-help-border: #f2f2f2;
-  --command-help-icon-background: #e3e3e3;
   --command-help-icon-fill: #52586c;
   --command-help-icon-border: #d1d5dc;
   --command-width: 600px;
   --command-height: 55px;
   --command-list-limit: 3;
+
+  --shortcut-background: #efefef;
   
   --notification-text: #ffffff;
   --notification-background: #2D2D37;
   --notification-shadow: 0px 4px 6px 2px rgba(0, 0, 0, 0.1);
   --notification-border-radius: 4px;
+
+  --color-green-1: #6edea1;
+  --color-green-2: #4bc983;
   
   --transition-s: 75ms;
   --transition-m: 150ms;
   --transition-l: 225ms;
+  --transition-xl: 300ms;
 
   --border-radius-s: 3px;
   --border-radius-l: 6px;
@@ -204,6 +209,7 @@ code {
   max-height: calc(var(--command-height) * var(--command-list-limit));
   overflow: hidden;
   padding: 0;
+  position: relative;
   width: 100%;
   
   &:focus {
@@ -272,13 +278,13 @@ code {
   --text-opacity: 0;
   
   align-items: center;
-  background-color: var(--command-help-icon-background);
+  background-color: var(--shortcut-background);
   border-bottom-left-radius: var(--border-radius-l);
   display: flex;
   padding: .35rem .5rem;
   
   &:hover {
-    --icon-opacity: 1;
+    --icon-opacity: .8;
     --text-opacity: 1;
     
     .commandPalette-help-hint {
@@ -319,6 +325,7 @@ code {
   padding-left: 1rem;
   padding-right: 1rem;
   height: var(--command-height);
+  transition: all var(--transition-xl) ease-in-out;
   
   &:hover,
   &:focus {
@@ -335,6 +342,23 @@ code {
     .command-arrow { 
       transform: translateX(2px);
     }
+  }
+
+  // Modifiers
+  &.-success {
+    background-image: linear-gradient(90deg, var(--color-green-1), var(--color-green-2));
+    background-position: bottom left;
+    background-repeat: no-repeat;
+    background-size: 0%;
+
+    .command-details {
+      font-weight: bold;
+      padding-left: 2rem;
+    }
+  }
+
+  &.-success-swipe {
+    background-size: 100%;
   }
 }
 
@@ -479,7 +503,7 @@ code {
 
 .shortcut {
   align-items: center;
-  background-color: var(--command-help-icon-background);
+  background-color: var(--shortcut-background);
   border-radius: var(--border-radius-s);
   border: 1px solid var(--command-help-icon-border);
   color: var(--command-text-tertiary);
@@ -492,28 +516,76 @@ code {
 
 
 //
-// Notifications
-// -------------
+// Checkmark
+// ---------
 
-.notification {
-  background: var(--notification-background);
-  box-shadow: var(--notification-shadow);
-  border-radius: var(--notification-border-radius);
-  color: var(--notification-text);
-  opacity: 0;
-  padding: .75rem 1rem;
+.checkmark {
+  --checkmark-size: 20px;
+
+  display: inline-block;
+  height: var(--checkmark-size);
+  left: 1rem;
+  overflow: hidden;
   position: absolute;
-  right: 0;
-  top: 1.5rem;
-  transform: translateX(100%);
-  transition: transform var(--transition-l) ease-in-out, opacity var(--transition-s);
-  user-select: none;
-  width: 200px;
+  top: 1rem;
+  width: var(--checkmark-size);
   
   // Modifiers
-  &.-visible {
-    opacity: 1;
-    transform: translateX(-1.5rem);
-    user-select: all;
+  &.-animate {
+    .checkmark-icon {
+      &:nth-child(1) { 
+        fill: #fff;
+      }
+
+      &:nth-child(2) {
+        animation: stroke var(--transition-xl) ease-in-out forwards;
+        stroke: var(--color-green-2);
+      }
+    }
+  }
+}
+
+.checkmark-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  width: var(--checkmark-size);
+}
+
+.checkmark-icon {
+  position: absolute;
+
+  // Circle
+  &:nth-child(1) { 
+    fill: transparent;
+    height: var(--checkmark-size);
+    left: 0;
+    top: 0;
+    transition: fill var(--transition-m);
+    width: var(--checkmark-size);
+  }
+
+  // Checkmark
+  &:nth-child(2) {
+    --stroke: 16;
+
+    fill: transparent;
+    height: 16px;
+    left: 50%;
+    stroke: transparent;
+    stroke-dasharray: var(--stroke);
+    stroke-dashoffset: var(--stroke);
+    top: 10px;
+    transform: translate3d(-5px, -3px, 0);
+    transition: stroke var(--transition-xl);
+    width: 16px;
+  }
+}
+
+// Animations
+@keyframes stroke { 
+  to { 
+    stroke-dashoffset: 0;
   }
 }

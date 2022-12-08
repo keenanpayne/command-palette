@@ -9,7 +9,6 @@ const input = parentElement.querySelector('.commandPalette-input');
 const list = parentElement.querySelector('.commandPalette-list');
 const help = parentElement.querySelector('.commandPalette-help');
 const helpGuide = help.querySelector('.commandPalette-help-guide');
-const notification = document.querySelector('.notification');
 const a11yHiddenClass = '_a11y_hidden';
 const visibleClass = '-visible';
 const hiddenClass = '-hidden';
@@ -115,7 +114,6 @@ const shortcutKeys = [
 let state = {
   activeCommand: -1,
   activeParent: -1,
-  notification: '',
   help: true,
 };
 
@@ -187,6 +185,32 @@ const rightArrowElement = (options) => {
   if (!options) return '';
   
   return `<svg class="command-arrow" width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg"> <g clip-path="url(#clip0_41_300)"> <path d="M19.5804 10.5833C20.1384 10.0187 20.1384 9.10181 19.5804 8.53723L12.4375 1.31067C11.8795 0.746094 10.9732 0.746094 10.4152 1.31067C9.85714 1.87524 9.85714 2.79211 10.4152 3.35669L15.125 8.11719H1.42857C0.638393 8.11719 0 8.76306 0 9.5625C0 10.3619 0.638393 11.0078 1.42857 11.0078H15.1205L10.4196 15.7683C9.86161 16.3329 9.86161 17.2498 10.4196 17.8143C10.9777 18.3789 11.8839 18.3789 12.442 17.8143L19.5848 10.5878L19.5804 10.5833Z" fill="#2D2D37"/> </g> <defs> <clipPath id="clip0_41_300"> <rect width="20" height="19" fill="white"/> </clipPath> </defs> </svg>`
+}
+
+const checkmarkElement = () => {
+  return `
+    <div class="checkmark">
+      <span class="checkmark-container">
+        <svg class="checkmark-icon">
+          <use xlink:href="#circle"/>
+        </svg>
+          
+        <svg class="checkmark-icon">
+          <use xlink:href="#check"/>
+        </svg>
+      </span>
+    </div>
+      
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="circle">
+        <circle cx="8" cy="8" r="7.5"></circle>
+      </symbol>
+      
+      <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" id="check">
+        <path d="m.65909042 4.04356308 2.43156433 2.43156433 5.83150483-5.83150482" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25"/>
+      </symbol>
+    </svg>
+  `
 }
 
 const mergeSubcommandElement = () => { 
@@ -285,26 +309,36 @@ const render = (items, filter = '') => {
 // Notifications
 // -------------
 
-const notificationContents = (text = '') => {
-  state.notification = text;
-  notification.innerHTML = state.notification;
-}
-
-const notificationTrigger = () => {
+const notification = () => {
   const text = commands[state.activeCommand].notification;
   
   if (!text) return false;
   
-  notificationContents(text)
-  notification.classList.toggle(visibleClass);
+  const notificationItem = [
+    {
+      name: text
+    }
+  ]
+  
+  render(notificationItem);
+
+  // Notification aimation
+  const command = parentElement.querySelector('.command');
+  command.insertAdjacentHTML('beforebegin', checkmarkElement());
+  command.classList.add('-success');
+  const checkmark = parentElement.querySelector('.checkmark');
   
   setTimeout(() => {
-    notification.classList.toggle(visibleClass);
-  }, 2000);  
-  
+    command.classList.add('-success-swipe');
+  }, 100);  
+
   setTimeout(() => {
-    notificationContents();
-  }, 3000);
+    checkmark.classList.add('-animate');
+  }, 125);  
+
+  setTimeout(() => {
+    close();
+  }, 1300);
 }
 
 
@@ -343,8 +377,7 @@ const triggerCommand = () => {
   const subcommand = checkSubcommand();
 
   if (!options && !subcommand) {
-    notificationTrigger();
-    close();
+    notification();
   } else {
     input.value = commands[state.activeCommand].name;
     input.insertAdjacentHTML('beforebegin', commands[state.activeCommand].icon);
@@ -467,7 +500,6 @@ const eventListeners = () => {
       const sortCommands = commands.concat().sort((a, b) => (a.group > b.group) ? 1 : (a.group === b.group) ? ((a.name > b.name) ? 1 : -1) : -1);
 
       render(sortCommands);
-      console.log(sortCommands);
 
       parentElement.classList.add('-grouped');
     } else {
