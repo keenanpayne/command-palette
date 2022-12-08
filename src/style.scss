@@ -242,6 +242,7 @@ code {
   display: flex;
   flex-direction: row;
   margin-left: 1rem;
+  user-select: none;
   
   // Modifiers
   &.-hidden { 
@@ -381,9 +382,9 @@ code {
   font-size: var(--font-size-16);
   font-variant: all-petite-caps;
   font-weight: 500;
-  margin-bottom: .25rem;
+  margin-bottom: .3rem;
   margin-left: .875rem;
-  margin-top: .5rem;
+  margin-top: .45rem;
   user-select: none;
 }
 
