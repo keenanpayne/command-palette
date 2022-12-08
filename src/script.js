@@ -182,9 +182,34 @@ const rightArrowElement = (options) => {
 const mergeSubcommandElement = () => { 
   return `
     <li class="subcommand">
-      <div class="merge">
-        <input type="text" placeholder="Source node">
-        <input type="text" placeholder="Source node">
+      <div class="subcommand-group">
+        <div class="subcommand-label">
+          <span class="subcommand-heading">
+            Source nodes
+          </span>
+
+          <span class="subcommand-description">
+            These will be merged into the target node
+          </span>
+        </div>
+        
+        <input class="search" type="text" placeholder="Find nodes">
+      </div>
+
+      <div class="subcommand-group">
+        <div class="subcommand-label">
+          <span class="subcommand-heading">
+            Target node
+          </span>
+        </div>
+        
+        <input class="search" type="text" placeholder="Find nodes">
+      </div>
+
+      <div class="subcommand-action">
+        <button class="button -primary">
+          Merge
+        </button>
       </div>
     </li>
   `
@@ -307,7 +332,7 @@ const triggerCommand = () => {
   } else {
     input.value = commands[state.activeCommand].name;
     input.insertAdjacentHTML('beforebegin', commands[state.activeCommand].icon);
-    parentElement.classList.add('-filled-with-icon');
+    parentElement.classList.add('-filled-with-icon', '-subcommand-active');
   }
   
   if (options) {
@@ -359,10 +384,11 @@ const reset = () => {
   list.classList.remove('-scroll');
 
   const filledWithIconClass = '-filled-with-icon';
+  const subcommandActiveClass = '-subcommand-active';
   parentElement.classList.contains(filledWithIconClass) && parentElement.classList.remove(filledWithIconClass);
+  parentElement.classList.contains(subcommandActiveClass) && parentElement.classList.remove(subcommandActiveClass);
   const headerIcon = header.querySelector('.command-icon')
   headerIcon && headerIcon.remove();
-
 
   render(commands);
 }
