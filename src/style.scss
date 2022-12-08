@@ -216,7 +216,9 @@ code {
   }
   
   &.-no-results {
-    font-style: italic;
+    color: var(--command-text-tertiary);
+    font-variant: all-small-caps;
+    letter-spacing: -.015em;
   }
 }
 
