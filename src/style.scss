@@ -133,22 +133,6 @@ code {
 // Command Palette
 // ---------------
 
-@keyframes displayCommandPalette {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(1, 1);
-  }
-
-  50% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1.05, 1.05);
-  }
-  
-  100% {
-    transform: translate(-50%, -50%) scale(1, 1);
-  }
-}
-
 .commandPalette {
   color: var(--command-text);
   border-radius: var(--border-radius-l);
@@ -600,7 +584,27 @@ code {
   }
 }
 
+
+//
 // Animations
+// ----------
+
+@keyframes displayCommandPalette {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1, 1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05, 1.05);
+  }
+  
+  100% {
+    transform: translate(-50%, -50%) scale(1, 1);
+  }
+}
+
 @keyframes stroke { 
   to { 
     stroke-dashoffset: 0;
