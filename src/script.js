@@ -332,13 +332,14 @@ const triggerCommand = () => {
   } else {
     input.value = commands[state.activeCommand].name;
     input.insertAdjacentHTML('beforebegin', commands[state.activeCommand].icon);
-    parentElement.classList.add('-filled-with-icon', '-subcommand-active');
+    parentElement.classList.add('-filled-with-icon');
   }
   
   if (options) {
     render(options);
   } else if (subcommand) { 
     renderSubcommand(subcommand);
+    parentElement.classList.add('-subcommand-active');
   } else { 
     return false;
   }
