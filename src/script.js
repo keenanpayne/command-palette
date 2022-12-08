@@ -114,6 +114,7 @@ const shortcutKeys = [
 
 let state = {
   activeCommand: -1,
+  activeParent: -1,
   notification: '',
   help: true,
 };
@@ -220,7 +221,7 @@ const renderCommand = (item, filter = '', index) => {
   const {name, description, group, shortcut, icon, options, subcommand} = item;
   
   return `
-    <li class="command" role="button" tabindex="0" data-index="${index}">
+    <li class="command" role="button" tabindex="0" data-index="${index}" ${state.activeParent > -1 ? `data-parent="${state.activeParent}"` : ``}>
       ${iconElement(icon)}
       <span class="command-details">
         ${filter ? boldString(name, filter) : name ? name : ''}
