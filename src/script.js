@@ -382,7 +382,7 @@ const reset = () => {
   state.activeCommand = -1;
   input.value = '';
   input.focus();
-  list.classList.remove('-scroll');
+  list.classList.remove('-scroll', '-no-results');
 
   const filledWithIconClass = '-filled-with-icon';
   const subcommandActiveClass = '-subcommand-active';
@@ -447,8 +447,28 @@ const eventListeners = () => {
     if (filter.length === 0) {
       reset();
     }
-    
-    render(filtered, filter);
+
+    // Group commands when typing forward slash (/)
+    if (filter === '/') {
+      console.log('group commands');
+    } else {
+      // If no commands match, show a message
+      if (!filtered.length) {
+        const noResults = [
+          {
+            name: 'No results',
+          }
+        ];
+  
+        list.classList.add('-no-results');
+  
+        render(noResults);
+      } else {
+        list.classList.remove('-no-results');
+  
+        render(filtered, filter);
+      }
+    }
   });
 
   // Input is focused
