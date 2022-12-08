@@ -123,9 +123,8 @@ let state = {
 // -------
 
 // Ref: https://stackoverflow.com/questions/29896907/bold-part-of-string
-// TODO: When searching "view board", "view as board" should display, even though
-//       "as" was never typed
-// TODO: "Ensure all `<strong></strong>` tags are removed when `reset()` runs"
+// TODO: Implement fuzzy string matching. e.g., When "view board" is typed, 
+//       "view as board" should display, even though "as" was never typed
 const boldString = (str, substr) => str.toLowerCase().replaceAll(substr.toLowerCase(), `<strong>${substr}</strong>`);
 
 
@@ -159,6 +158,7 @@ const groupElement = (group) => {
   `
 }
 
+// TODO: Fix bug where comma is added between shortcuts
 const shortcutKeysElement = (shortcuts) => {
   if (!shortcuts) return '';
   
@@ -346,11 +346,11 @@ const notification = () => {
 // Interactivity
 // -------------
 
+// TODO: Currently, clicking on a child option will set `options` and `subcommand`
+//       to `true` in both `checkOptions` and `checkSubcommand` because it's
+//       checking the parent command for options instead of the child command
+//       e.g., Clicking "Merge" then "With tag #" triggers a notification
 const checkOptions = () => {
-  // TODO: Currently, clicking on a child option will set 
-  //       `options` to `true`, since we're checking the parent command
-  //       for options. We need to check the child command for options.
-  //       In the current project, clicking "Merge" then "With tag #" triggers a notification
   const options = commands[state.activeCommand].options;
   
   if (!options) { 
@@ -371,19 +371,19 @@ const checkSubcommand = () => {
 }
 
 const triggerCommand = () => {
-  // Pass `command` to each of these functions, dictating 
-  // which element should be checked for options or subcommands
   const options = checkOptions();
   const subcommand = checkSubcommand();
 
   if (!options && !subcommand) {
     notification();
   } else {
+    // Update input value with command name and icon
     input.value = commands[state.activeCommand].name;
     input.insertAdjacentHTML('beforebegin', commands[state.activeCommand].icon);
     parentElement.classList.add('-filled-with-icon');
   }
   
+  // Handle command options and subcommands
   if (options) {
     render(options);
   } else if (subcommand) { 
@@ -446,7 +446,6 @@ const eventListeners = () => {
     // CTRL + K
     if (event.ctrlKey && event.key === 'k') {
       event.preventDefault();
-      
       open();
       
       if (parentElement.classList.contains(visibleClass)) {
