@@ -135,6 +135,27 @@ code {
     display: block;
     visibility: visible;
   }
+
+  &.-filled-with-icon {
+    .commandPalette-input {
+      text-indent: 3rem;
+    }
+
+    .commandPalette-icon {
+      position: absolute;
+      left: 1rem;
+    
+      // Descendants
+      path { 
+        fill: var(--command-text-inverse)
+      }
+    }
+  }
+}
+
+.commandPalette-header { 
+  align-items: center;
+  display: flex;
 }
 
 .commandPalette-input {
@@ -325,6 +346,15 @@ code {
 // -----------
 
 .subcommand { 
+  padding: 1rem 1.5rem;
+}
+
+
+//
+// Merge
+// -----
+
+.merge { 
 
 }
 
