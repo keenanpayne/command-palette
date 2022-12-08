@@ -161,6 +161,12 @@ code {
       max-height: unset;
     }
   }
+
+  &.-grouped {
+    .command-group {
+      @include a11yVisible();
+    }
+  }
 }
 
 .commandPalette-header { 
@@ -354,6 +360,21 @@ code {
 .command-arrow {
   max-width: 16px;
   transition: transform var(--transition-m);  
+}
+
+.command-group {
+  @include a11yHidden();
+
+  color: var(--command-text-tertiary);
+  display: block;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-16);
+  font-variant: all-petite-caps;
+  font-weight: 500;
+  margin-bottom: .25rem;
+  margin-left: .875rem;
+  margin-top: .5rem;
+  user-select: none;
 }
 
 //

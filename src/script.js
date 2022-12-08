@@ -151,6 +151,16 @@ const iconElement = (icon) => {
   return icon;
 }
 
+const groupElement = (group) => {
+  if (!group) return '';
+  
+  return `
+    <span class="command-group" data-name=${group.toLowerCase().trim()}>
+      ${group}
+    </span>
+  `
+}
+
 const shortcutKeysElement = (shortcuts) => {
   if (!shortcuts) return '';
   
@@ -240,11 +250,12 @@ const renderSubcommand = (command) => {
 }
 
 const renderCommand = (item, filter = '', index) => {
-  const {name, description, group, shortcut, icon, options, subcommand} = item;
-  
+  const {name, description, shortcut, icon, options, subcommand} = item;
+
   return `
     <li class="command" role="button" tabindex="0" data-index="${index}" ${state.activeParent > -1 ? `data-parent="${state.activeParent}"` : ``}>
       ${iconElement(icon)}
+
       <span class="command-details">
         ${filter ? boldString(name, filter) : name ? name : ''}
         ${descriptionElement(description)}
@@ -258,8 +269,14 @@ const renderCommand = (item, filter = '', index) => {
 
 const render = (items, filter = '') => {
   list.innerHTML = "";
+  let groups = [];
     
   items.forEach((item, index) => {
+    if (!groups.includes(item.group)) {
+      groups.push(item.group);
+      list.innerHTML += groupElement(item.group);
+    }
+
     list.innerHTML += renderCommand(item, filter, index);
   });
 }
@@ -328,7 +345,6 @@ const triggerCommand = () => {
   if (!options && !subcommand) {
     notificationTrigger();
     close();
-    reset();
   } else {
     input.value = commands[state.activeCommand].name;
     input.insertAdjacentHTML('beforebegin', commands[state.activeCommand].icon);
@@ -376,6 +392,7 @@ const open = () => {
 const close = () => {
   parentElement.classList.remove(visibleClass);
   root.classList.remove(overlayClass);
+  reset();
 }
 
 const reset = () => {
@@ -383,11 +400,7 @@ const reset = () => {
   input.value = '';
   input.focus();
   list.classList.remove('-scroll', '-no-results');
-
-  const filledWithIconClass = '-filled-with-icon';
-  const subcommandActiveClass = '-subcommand-active';
-  parentElement.classList.contains(filledWithIconClass) && parentElement.classList.remove(filledWithIconClass);
-  parentElement.classList.contains(subcommandActiveClass) && parentElement.classList.remove(subcommandActiveClass);
+  parentElement.classList.remove('-filled-with-icon', '-subcommand-active', '-grouped');
   const headerIcon = header.querySelector('.command-icon')
   headerIcon && headerIcon.remove();
 
@@ -455,6 +468,8 @@ const eventListeners = () => {
 
       render(sortCommands);
       console.log(sortCommands);
+
+      parentElement.classList.add('-grouped');
     } else {
       // If no commands match, show a message
       if (!filtered.length) {
