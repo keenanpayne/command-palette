@@ -133,20 +133,37 @@ code {
 // Command Palette
 // ---------------
 
+@keyframes displayCommandPalette {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1, 1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.05, 1.05);
+  }
+  
+  100% {
+    transform: translate(-50%, -50%) scale(1, 1);
+  }
+}
+
 .commandPalette {
   color: var(--command-text);
   border-radius: var(--border-radius-l);
   box-shadow: var(--command-shadow);
   display: none;
-  width: var(--command-width);
+  left: 50%;
   position: absolute;
   top: 50%;
-  left: 50%;
   transform: translate(-50%, -50%);
   visibility: hidden;
+  width: var(--command-width);
   
   // Modifiers
   &.-visible {
+    animation: displayCommandPalette var(--transition-xl);
     display: block;
     visibility: visible;
   }
