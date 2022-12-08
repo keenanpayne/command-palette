@@ -138,12 +138,13 @@ code {
 
   &.-filled-with-icon {
     .commandPalette-input {
-      text-indent: 3rem;
+      text-indent: 2.75rem;
     }
 
-    .commandPalette-icon {
+    .command-icon {
       position: absolute;
       left: 1rem;
+      transform: translateY(-1px);
     
       // Descendants
       path { 
@@ -161,7 +162,8 @@ code {
 .commandPalette-input {
   background-color: var(--command-input);
   border: none;
-  border-radius: var(--command-border-radius) var(--command-border-radius) 0 0;
+  border-top-left-radius: var(--command-border-radius);
+  border-top-right-radius: var(--command-border-radius);
   color: var(--command-text-inverse);
   font-size: 1rem;
   line-height: 1;
@@ -188,6 +190,11 @@ code {
   // Modifiers
   &.-scroll {
     overflow: scroll;
+  }
+  
+  &.-rounded {
+    border-bottom-left-radius: var(--command-border-radius);
+    border-bottom-right-radius: var(--command-border-radius);
   }
 }
 
@@ -237,7 +244,6 @@ code {
   align-items: center;
   background-color: var(--command-help-icon-background);
   border-bottom-left-radius: var(--command-border-radius);
-  cursor: pointer;
   display: flex;
   padding: .35rem .5rem;
   
@@ -302,6 +308,13 @@ code {
   }
 }
 
+.command-icon {
+  height: auto;
+  line-height: 0;
+  margin-right: .75rem;
+  max-width: 18px;
+}
+
 .command-description {
   color: var(--command-text-tertiary);
   display: block;
@@ -310,17 +323,6 @@ code {
   opacity: 0;
   transform: translateY(-5px);
   transition: transform var(--transition-m), opacity var(--transition-s);
-}
-
-.command-icon {
-  line-height: 0;
-  margin-right: .75rem;
-  
-  // Descendants
-  > svg {
-    height: auto;
-    max-width: 18px;
-  }
 }
 
 .command-details {
