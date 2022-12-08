@@ -416,6 +416,11 @@ const eventListeners = () => {
       const name = item.name.toLowerCase();
       return name.includes(filter.toLowerCase());
     });
+
+    // If input is modified and empty, reset the list
+    if (filter.length === 0) {
+      reset();
+    }
     
     render(filtered, filter);
   });
