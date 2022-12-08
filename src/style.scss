@@ -62,7 +62,6 @@
   --command-help-icon-background: #e3e3e3;
   --command-help-icon-fill: #52586c;
   --command-help-icon-border: #d1d5dc;
-  --command-help-font-size: .875rem;
   --command-width: 600px;
   --command-height: 55px;
   --command-list-limit: 3;
@@ -82,6 +81,10 @@
   --font-family-base: -apple-system, system-ui, sans-serif;
   --font-family-mono: 'Source Code Pro', monospace;
   --font-weight-mono-semibold: 700;
+
+  --font-size-12: .75rem;
+  --font-size-14: .875rem;
+  --font-size-16: 1rem;
 }
 
 
@@ -180,7 +183,7 @@ code {
   border-top-left-radius: var(--border-radius-l);
   border-top-right-radius: var(--border-radius-l);
   color: var(--command-text-inverse);
-  font-size: 1rem;
+  font-size: var(--font-size-16);
   line-height: 1;
   outline: 0;
   padding: 0;
@@ -224,7 +227,7 @@ code {
   border-radius: 0 0 var(--border-radius-l) var(--border-radius-l);
   color: var(--command-text-tertiary);
   display: flex;
-  font-size: var(--command-help-font-size);
+  font-size: var(--font-size-14);
 }
 
 .commandPalette-help-item {
@@ -282,7 +285,7 @@ code {
 .commandPalette-help-hint {
   @include a11yHidden();
   
-  font-size: .875rem;
+  font-size: var(--font-size-14);
   line-height: 0;
   opacity: var(--text-opacity);
   transition: opacity var(--transition-s);
@@ -337,7 +340,7 @@ code {
 .command-description {
   color: var(--command-text-tertiary);
   display: block;
-  font-size: .75rem;
+  font-size: var(--font-size-12);
   height: 0;
   opacity: 0;
   transform: translateY(-5px);
@@ -407,7 +410,7 @@ code {
 
 .subcommand-description {
   color: #7B839F;
-  font-size: .75rem;
+  font-size: var(--font-size-12);
 }
 
 .subcommand-action {
@@ -451,7 +454,7 @@ code {
   border: 1px solid #D6D7E1;
   border-radius: var(--border-radius-s);
   color: #2D2D37;
-  font-size: 1rem;
+  font-size: var(--font-size-16);
   padding: .75rem .875rem;
   text-indent: 1.75rem;
   width: 100%;
