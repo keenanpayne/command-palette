@@ -448,9 +448,13 @@ const eventListeners = () => {
       reset();
     }
 
-    // Group commands when typing forward slash (/)
+    // Forward slash (/) groups commands
     if (filter === '/') {
-      console.log('group commands');
+      // Group commands by group, then alphabetically
+      const sortCommands = commands.concat().sort((a, b) => (a.group > b.group) ? 1 : (a.group === b.group) ? ((a.name > b.name) ? 1 : -1) : -1);
+
+      render(sortCommands);
+      console.log(sortCommands);
     } else {
       // If no commands match, show a message
       if (!filtered.length) {
@@ -461,11 +465,9 @@ const eventListeners = () => {
         ];
   
         list.classList.add('-no-results');
-  
         render(noResults);
       } else {
         list.classList.remove('-no-results');
-  
         render(filtered, filter);
       }
     }
