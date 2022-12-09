@@ -2,6 +2,15 @@
 
 Original CodePen demo: [https://codepen.io/keenanpayne/pen/eYKPqgm/bc7d9eaa2fabed4c5eb296e5c26cfcd9](https://codepen.io/keenanpayne/pen/eYKPqgm/bc7d9eaa2fabed4c5eb296e5c26cfcd9).
 
+## Setup
+
+Use Node v14
+
+```bash
+npm install
+npm run serve
+```
+
 ## Bugs
 
 - [ ] Fix duplicate icon issue
