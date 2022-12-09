@@ -21,3 +21,15 @@ Original CodePen demo: [https://codepen.io/keenanpayne/pen/eYKPqgm/bc7d9eaa2fabe
 - [ ] Replace Gulp build scripts with NPM scripts
   - CodePen exported my demo with Gulp, but this is unnecessary and adds overhead
 - [ ] Better organize CSS custom properties to simplify and reduce duplicates
+
+## Inspiration
+  - https://codepen.io/keenanpayne/details/YmKKer
+  - https://codepen.io/patheticgeek/pen/ExmgadM?editors=0010
+  - https://www.toptal.com/developers/keycode/for/meta
+  - https://philipcdavis.com/writing/command-palette-interfaces
+  - https://github.com/stefanjudis/awesome-command-palette
+  - https://github.com/timc1/kbar
+  - https://github.com/asabaylus/react-command-palette
+  - https://github.com/harshhhdev/kmenu
+  - https://kmenu.hxrsh.in
+  - https://github.com/albingroen/react-cmdk
