@@ -349,9 +349,9 @@ code {
   // Modifiers
   &.-success {
     background-image: linear-gradient(90deg, var(--color-green-1), var(--color-green-2));
-    background-position: bottom left;
+    background-position: center left;
     background-repeat: no-repeat;
-    background-size: 0%;
+    background-size: 0% var(--command-height);
 
     .command-details {
       font-weight: bold;
@@ -360,7 +360,7 @@ code {
   }
 
   &.-success-swipe {
-    background-size: 100%;
+    background-size: 100% var(--command-height);
   }
 }
 
