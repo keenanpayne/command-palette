@@ -25,6 +25,9 @@ npm run serve
 
 ## Improvements
 
+- [ ] Allow node group searching
+  - This could be accomplished by using any text following an initial forward slash (`/`) as a way to filter node groups
+    - e.g., `/no` would return the "Node" group and all relevant commands
 - [ ] Use a standard pattern for creating reusable JavaScript components.
 - [ ] Check accessibility, ensure proper `aria-*` roles are being set, cross-reference with [WCAG guidelines](https://www.w3.org/WAI/standards-guidelines/wcag/)
 - [ ] Replace Gulp build scripts with NPM scripts
