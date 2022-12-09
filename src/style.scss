@@ -250,6 +250,7 @@ code {
   flex-direction: row;
   margin-left: 1rem;
   user-select: none;
+  white-space: nowrap;
   
   // Modifiers
   &.-hidden { 
