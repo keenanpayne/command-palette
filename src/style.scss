@@ -348,13 +348,14 @@ code {
 
   // Modifiers
   &.-success {
+    color: var(--command-text-primary);
     background-image: linear-gradient(90deg, var(--color-green-1), var(--color-green-2));
     background-position: center left;
     background-repeat: no-repeat;
     background-size: 0% var(--command-height);
 
     .command-details {
-      font-weight: bold;
+      color: var(--command-text-inverse);
       padding-left: 2rem;
     }
   }
